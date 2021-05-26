@@ -1,0 +1,49 @@
+Type,SelectionStatus,Generation,rep,Treatment,CourtshipNumber
+RS,Baseline_RS,Parental,1,Empty Vial,25
+RS,Baseline_RS,Parental,2,Empty Vial,134
+RS,Baseline_RS,Parental,3,Empty Vial,48
+RS,Baseline_RS,Parental,4,Empty Vial,73
+RS,Baseline_RS,Parental,1,Mantis Vial,24
+RS,Baseline_RS,Parental,2,Mantis Vial,35
+RS,Baseline_RS,Parental,3,Mantis Vial,16
+RS,Baseline_RS,Parental,4,Mantis Vial,19
+RS,RelaxedSelection,After 5th,1,Empty Vial,35
+RS,RelaxedSelection,After 5th,2,Empty Vial,128
+RS,RelaxedSelection,After 5th,3,Empty Vial,206
+RS,RelaxedSelection,After 5th,4,Empty Vial,75
+RS,RelaxedSelection,After 5th,1,Mantis Vial,28
+RS,RelaxedSelection,After 5th,2,Mantis Vial,138
+RS,RelaxedSelection,After 5th,3,Mantis Vial,122
+RS,RelaxedSelection,After 5th,4,Mantis Vial,79
+RS,RelaxedSelection,After 10th,1,Empty Vial,441
+RS,RelaxedSelection,After 10th,2,Empty Vial,382
+RS,RelaxedSelection,After 10th,3,Empty Vial,103
+RS,RelaxedSelection,After 10th,4,Empty Vial,202
+RS,RelaxedSelection,After 10th,1,Mantis Vial,488
+RS,RelaxedSelection,After 10th,2,Mantis Vial,502
+RS,RelaxedSelection,After 10th,3,Mantis Vial,91
+RS,RelaxedSelection,After 10th,4,Mantis Vial,355
+S,Baseline_S,Parental,1,Empty Vial,25
+S,Baseline_S,Parental,2,Empty Vial,134
+S,Baseline_S,Parental,3,Empty Vial,48
+S,Baseline_S,Parental,4,Empty Vial,73
+S,Baseline_S,Parental,1,Mantis Vial,24
+S,Baseline_S,Parental,2,Mantis Vial,35
+S,Baseline_S,Parental,3,Mantis Vial,16
+S,Baseline_S,Parental,4,Mantis Vial,19
+S,Selection,After 5th,1,Empty Vial,389
+S,Selection,After 5th,2,Empty Vial,417
+S,Selection,After 5th,3,Empty Vial,93
+S,Selection,After 5th,4,Empty Vial,286
+S,Selection,After 5th,1,Mantis Vial,150
+S,Selection,After 5th,2,Mantis Vial,195
+S,Selection,After 5th,3,Mantis Vial,146
+S,Selection,After 5th,4,Mantis Vial,341
+S,Selection,After 10th,1,Empty Vial,171
+S,Selection,After 10th,2,Empty Vial,244
+S,Selection,After 10th,3,Empty Vial,33
+S,Selection,After 10th,4,Empty Vial,150
+S,Selection,After 10th,1,Mantis Vial,132
+S,Selection,After 10th,2,Mantis Vial,425
+S,Selection,After 10th,3,Mantis Vial,16
+S,Selection,After 10th,4,Mantis Vial,224

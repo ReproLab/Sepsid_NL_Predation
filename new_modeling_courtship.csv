@@ -1,0 +1,41 @@
+selection,gen,rep,treatment,courtshipnumber
+no predation,baseline,1,no insect,25
+no predation,baseline,2,no insect,134
+no predation,baseline,3,no insect,48
+no predation,baseline,4,no insect,73
+predation,baseline,1,insect,24
+predation,baseline,2,insect,35
+predation,baseline,3,insect,16
+predation,baseline,4,insect,19
+no predation,mid,1,no insect,35
+no predation,mid,2,no insect,128
+no predation,mid,3,no insect,206
+no predation,mid,4,no insect,75
+no predation,mid,1,insect,28
+no predation,mid,2,insect,138
+no predation,mid,3,insect,122
+no predation,mid,4,insect,79
+no predation,end,1,no insect,441
+no predation,end,2,no insect,382
+no predation,end,3,no insect,103
+no predation,end,4,no insect,202
+no predation,end,1,insect,488
+no predation,end,2,insect,502
+no predation,end,3,insect,91
+no predation,end,4,insect,355
+predation,mid,1,no insect,389
+predation,mid,2,no insect,417
+predation,mid,3,no insect,93
+predation,mid,4,no insect,286
+predation,mid,1,insect,150
+predation,mid,2,insect,195
+predation,mid,3,insect,146
+predation,mid,4,insect,341
+predation,end,1,no insect,171
+predation,end,2,no insect,244
+predation,end,3,no insect,33
+predation,end,4,no insect,150
+predation,end,1,insect,132
+predation,end,2,insect,425
+predation,end,3,insect,16
+predation,end,4,insect,224
