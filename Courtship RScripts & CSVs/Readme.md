@@ -1,7 +1,7 @@
 Courtship related analyses & raw data only. 
 
-Regarding RScript:
-- Used original RSCript from Dropbox > UG UROPS Pamela Kuan > POST UROPS SAVE ME >Manuscript > R Scripts . Mean±SE plots were previously chosen, so removed CI codes to avoid confusion
+Regarding RScripts:
+- Used original RScripts from Dropbox > UG UROPS Pamela Kuan > POST UROPS SAVE ME >Manuscript > R Scripts . Mean±SE plots were previously chosen, so removed CI codes to avoid confusion
 
 Regarding .csv files:
 - Unedited .csv files from Dropbox > UG UROPS Pamela Kuan > POST UROPS SAVE ME >Manuscript > Data Files
