@@ -30,20 +30,3 @@ par(mar=c(5,7,4,2)+0.1)
 plotCI(y=AImean, x=1:3, uiw=AISE, err='y', xaxt='n', xlab="", ylab="Activity Index",cex=1.5,pch=15,pt.bg="black",ylim=c(1600,1800))
 axis(1, at=1:3, labels=levels(coact$treatment), las=1)
 title(main="Baseline Activity Index")
-
-
-#Boxplot
-library(ggplot2)
-ggplot(coact, aes(x=treatment, y=activityIndex)) + 
-    geom_boxplot() + ylab("Activity Index") + xlab("Treatment") +
-	ggtitle("Baseline Activity Index") + theme_light() +
-	theme(plot.title = element_text(size=12, face="bold", hjust = 0.5),
-	legend.title = element_text(size=11, face="bold"), 
-	legend.text = element_text(size = 11),
-	axis.text.x = element_text(size = 13),
-	axis.text.y = element_text(size = 13),
-	axis.title.x = element_text(size=13),
-	axis.title.y = element_text(size=13)) +
-	#scale_y_continuous(limits = c(1600,1750),expand = c(0,0))+
-  stat_summary(fun = mean, geom = "point", shape=4, col = "black", position=position_dodge(0.75)) +theme_light() #+ 
-
