@@ -1,0 +1,13 @@
+id,treatment,activityIndex,courtshipnumber
+c1,Control,1683.4,25
+c2,Control,1730.35,134
+c3,Control,1714.05,48
+c4,Control,1689.3,73
+m1,Mantid,1627.8,24
+m2,Mantid,1702.85,35
+m3,Mantid,1689.7,16
+m4,Mantid,1703.7,19
+b1,Beetle,1663.45,83
+b2,Beetle,1705.6,54
+b3,Beetle,1659.45,165
+b4,Beetle,1703.7,35
