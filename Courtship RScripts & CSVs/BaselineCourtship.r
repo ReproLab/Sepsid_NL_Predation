@@ -11,6 +11,10 @@ shapiro.test(coact$courtshipnumber) #p-value < 0.05 implying that the data signi
 
 #Kruskal Wallis	
 kruskal.test(courtshipnumber ~ treatment, data = coact) #p-value less than sig 0.05, can conclude sig diffs between groups.
+#Kruskal-Wallis rank sum test
+#data:  courtshipnumber by treatment
+#Kruskal-Wallis chi-squared = 6.2816, df = 2, p-value = 0.04325
+
 
 
 #Multiple pairwise-comparison between groups
