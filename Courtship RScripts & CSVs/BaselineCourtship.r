@@ -6,21 +6,16 @@ str(coact)
 coact$id <- as.character(coact$id)
 coact$treatment <- ordered(coact$treatment, levels=c("Control","Beetle","Mantid"))
 
-
 shapiro.test(coact$courtshipnumber) #p-value < 0.05 implying that the data significantly different from normal dist. AKA assume non-normality
+
 
 #Kruskal Wallis	
 kruskal.test(courtshipnumber ~ treatment, data = coact) #p-value less than sig 0.05, can conclude sig diffs between groups.
 
 
 #Multiple pairwise-comparison between groups
-# From Kruskal wallis, we don't know which pairs of groups are different -> can use pairwise.wilcox.test() to calculate pairwise comparisons between group levels with corrections for multiple testing.
+# From Kruskal wallis, we don't know which pairs of groups are different -> can use dunn_test() to calculate pairwise comparisons between group levels with corrections for multiple testing.
 library(rstatix)
-
-pairwise.wilcox.test(coact$courtshipnumber, coact$treatment)
-#       Control Beetle
-#Beetle 0.69    -     
-#Mantid 0.13    0.13  
 
 dunn_test(coact, courtshipnumber ~ treatment)
 #.y.             group1  group2    n1    n2 statistic      p  p.adj p.adj.signif
