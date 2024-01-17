@@ -11,6 +11,10 @@ ggplot(data=data,aes(x=logbs,y=logtestes,colour=Treatment))+ geom_point(shape=19
   ggtitle("G0510 Body Size against Testes Volume") +theme_light()
 
 
+#### G0510 testing base relationship####
+ggplot(data=data,aes(x=bs,y=cbrtestes,colour=Treatment))+ geom_point(shape=19)+ geom_smooth(se=F)+ xlab("body size (mm)") + ylab("testes volume (mm)") +
+  ggtitle("G0510 Body Size against Testes Volume") +theme_light()
+
 
 #### Plot G5 ( + baseline G0 for comparison) only ####
 G5 <- filter(data, Generation < 10)
@@ -33,7 +37,7 @@ shapiro.test(G5RS$logtestes) #p-value = 0.02464 aka NOT NORMAL
 shapiro.test(G5S$logtestes) #p-value = 0.02464 aka NOT NORMAL
 
 
-#models
+#models (interpretation: http://www.sthda.com/english/articles/40-regression-analysis/167-simple-linear-regression-in-r/#model-assessment)
 model1<-lm(logtestes~logbs,subset=(Treatment=="Baseline population"),data=G5)
 par(mfrow=c(2,2))
 plot(model1)
@@ -57,7 +61,6 @@ summary(model3)
 ###y = 0.98932x + -0.69505 
 ## R^2=0.4031  
 ##p-value: 1.69e-06
-
 
 
 #find CI to see whether significant. if CI for model no 0, means allometry significant for that population. doesnt overlap--> sig pop level differenece.
@@ -146,14 +149,10 @@ confint(model6)
 #logbs        0.2341528  1.1190166
 
 
+
 ###################################### Body size vs Sperm Length ######################################
 
 data<-read.csv("C:\\Users\\Nicole Lee\\Desktop\\Pamela analyses check\\allometric plots\\MSpermLengthOnly_G0510_addTreatmentcol.csv")
-
-data$Treatment <- ordered(data$Treatment, levels=c("Baseline population","Relaxed Selection","Selection"))
-levels(data$Treatment)[levels(data$Treatment) == "Baseline population"]  <- "Baseline"
-levels(data$Treatment)[levels(data$Treatment) == "Relaxed Selection"]  <- "Control"
-levels(data$Treatment)[levels(data$Treatment) == "Selection"]  <- "Treatment"
 
 #### G0510 ####
 ggplot(data=data,aes(x=logbs,y=logsperm,colour=Treatment))+ geom_point(shape=19)+ stat_smooth(method=lm,level=0)+ xlab("log (body size (mm))") + ylab("log (sperm length (µm))") +
@@ -199,16 +198,6 @@ summary(model8)
 ##y= -0.06207x + 2.46681
 ##R^2= -0.03535  
 ##p-value: 0.7053
-
-#point79 looks like outlier in QQ, does removing make a difference?: 
-#model2a<-lm(logsperm~logbs,subset=(Treatment=="Relaxed Selection"),data=G5[-c(79),])
-#par(mfrow=c(2,2))
-#plot(model2a)
-#summary(model2a)
-##y= -0.044851x + 2.469858
-##R^2= -0.03735 
-
-#not much diff. R2 values only increased abit: -0.03535 to -0.03735. Decided to keep point79
 
 model9<-lm(logsperm~logbs,subset=(Treatment=="Selection"),data=G5)
 par(mfrow=c(2,2))
@@ -422,34 +411,6 @@ confint(model18)
 #                 2.5 %    97.5 %
 #(Intercept) 2.499127 2.6849272
 #logtestes   0.059786 0.2875073
-
-
-
-#### G0510 testing base relationship####
-ggplot(data=data,aes(x=cbrtestes,y=avgss,colour=Treatment))+ geom_point(shape=19)+ geom_smooth(se=F)+ xlab("testes size (mm)") + ylab("sperm length (µm)") +
-  ggtitle("G0510 Body Size against Sperm length") +theme_light()
-
-
-#### Plot G5 ( + baseline G0 for comparison) only ####
-G5 <- filter(data, Generation < 10)
-
-##allometric plot
-ggplot(data=G5,aes(x=cbrtestes,y=avgss, colour=Treatment))+ geom_point(shape=19)+ geom_smooth(se=F)+ xlab("testes volume (mm)") + ylab("sperm length (µm)") +
-  ggtitle("G5 Testes Volume against Sperm length") +theme_light()+
-  #ylim(2.3, 2.5) +
-  geom_abline(intercept =3.375, slope = 1, color="gray55",linetype="dashed")
-
-#### Plot G10 ( + baseline G0 for comparison) only ####
-target <- c("0", "10")
-G10 <- filter(data, Generation  %in% target)
-
-##allometric plot
-ggplot(data=G10,aes(x=cbrtestes,y=avgss,colour=Treatment))+ geom_point(shape=19)+ geom_smooth(se=F)+ xlab("testes volume (mm)") + ylab("sperm length (µm)") +
-  ggtitle("G10 Testes Volume against Sperm length") +theme_light()+
-  #ylim(2.3, 2.5) +
-  geom_abline(intercept =3.365, slope = 1, color="gray55",linetype="dashed")
-
-
 
 
 ###################################### Replicates ######################################
