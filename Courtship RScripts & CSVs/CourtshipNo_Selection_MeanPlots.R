@@ -153,3 +153,35 @@ legend(
   pt.cex=c(1.5,1.8),
   lty=c(1,1)
 )
+
+################################################# Plot individual replicates ###################################################
+
+#### CONTROL ####
+RS <- filter(court, Type == "RS")
+
+RSC <- summarySE(RS, measurevar="CourtshipNumber", groupvars=c("Generation","Assay", "Replicate"))
+
+# Standard error of the mean
+ggplot(RSC, aes(x=Generation, y=CourtshipNumber, color=Assay, shape=Replicate)) + 
+  geom_errorbar(aes(ymin=CourtshipNumber-se, ymax=CourtshipNumber+se), width=.1) +
+  geom_point()+
+  geom_line(aes(group=Assay))+
+  facet_wrap(~ Replicate) +
+  scale_color_manual(values=c("#FF6600","maroon")) +
+  ggtitle("Control Courtship No.")+ 
+  theme_bw() +theme(plot.title = element_text(hjust = 0.5, face = "bold"), panel.grid.major = element_blank(), panel.grid.minor = element_blank())
+
+#### TREATMENT ####
+S <- filter(court, Type == "S")
+
+SC <- summarySE(S, measurevar="CourtshipNumber", groupvars=c("Generation","Assay", "Replicate"))
+
+# Standard error of the mean
+ggplot(SC, aes(x=Generation, y=CourtshipNumber, color=Assay, shape=Replicate)) + 
+  geom_errorbar(aes(ymin=CourtshipNumber-se, ymax=CourtshipNumber+se), width=.1) +
+  geom_point()+
+  geom_line(aes(group=Assay))+
+  facet_wrap(~ Replicate) +
+  scale_color_manual(values=c("#3399CC","dark blue")) +
+  ggtitle("Treatment Courtship No.")+ 
+  theme_bw() +theme(plot.title = element_text(hjust = 0.5, face = "bold"), panel.grid.major = element_blank(), panel.grid.minor = element_blank())
