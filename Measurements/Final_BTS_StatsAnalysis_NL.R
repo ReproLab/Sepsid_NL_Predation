@@ -9,11 +9,12 @@ library(rstatix)
 
 #### G0 G5 G10 only ####
 #--------Body Size------------
-#cleaned up "D:\\UG UROPS Pamela Kuan\\POST UROPS SAVE ME\\Manuscript\\Data Files\\full_model_bs.csv" -> "MBodysize Only_G0510.csv"
+
+BS<- read.csv("~/Bodysize Only_G0510.csv",na.strings = "NA",header=T)
 BS<- read.csv("C:\\Users\\Nicole Lee\\Desktop\\Pamela analyses check\\BS Significance\\Bodysize Only_G0510.csv",na.strings = "NA",header=T)
-BS<-na.omit(BS) 
 
 shapiro.test(BS$bs) #p-value < 0.05 implying that the data significantly different from normal dist. AKA assume non-normality.
+
 #http://www.sthda.com/english/wiki/normality-test-in-r
 
 #Kruskal Wallis	
@@ -21,62 +22,19 @@ kruskal.test(bs ~ Generation, data = BS) #p-value less than sig 0.05, can conclu
 
 
 #Multiple pairwise-comparison between groups
-# From Kruskal wallis, we don't know which pairs of groups are different -> can use dunn_test() to calculate pairwise comparisons between group levels with corrections for multiple testing.
+# From Kruskal wallis, we don't know which pairs of groups are different -> use dunn_test() to calculate post hoc pairwise multiple comparison
 
-#1st, sort by Selection Status. TO TEST DIFFERENCES BTWN GENERATIONS
-RSbs <- filter(BS, SelectionStatus == "RS")	#testing only Relaxed Selection for Parental,5th and 10th gen
-View(RSbs)
-
-pairwise.wilcox.test(RSbs$bs, RSbs$Generation)
-
-#F only:	   	0      5     
-#	5  0.0666 -     
-#  10 0.0049 0.2454
-
-
-#   0       5    
-#5  0.033   -    
-#10 1.1e-05 0.033
-
+#1st, sort by Selection Status (Group). To test differences between generations
+RSbs <- filter(BS, SelectionStatus == "RS")
 dunn_test(RSbs, bs ~ Generation)
-#M only
-#.y.   group1 group2    n1    n2 statistic        p    p.adj p.adj.signif
-#* <chr> <chr>  <chr>  <int> <int>     <dbl>    <dbl>    <dbl> <chr>       
-#1 bs    0      5         47    39      1.25 0.212    0.212    ns          
-#2 bs    0      10        47    49      3.61 0.000303 0.000908 ***         
-#3 bs    5      10        39    49      2.18 0.0294   0.0587   ns  
-
-
 #.y.   group1 group2    n1    n2 statistic          p      p.adj p.adj.signif
 #* <chr> <chr>  <chr>  <int> <int>     <dbl>      <dbl>      <dbl> <chr>       
 # 1 bs    0      5         91    76      2.32 0.0203     0.0406     *           
 # 2 bs    0      10        91    99      4.70 0.00000263 0.00000788 ****        
-# 3 bs    5      10        76    99      2.11 0.0350     0.0406     *  
+# 3 bs    5      10        76    99      2.11 0.0350     0.0406     * 
 
 
-
-Sbs <- filter(BS, SelectionStatus == "S")		#testing only Selection for Parental,5th and 10th gen
-View(Sbs)
-
-pairwise.wilcox.test(Sbs$bs, Sbs$Generation)
-#M only:
-#.y.   group1 group2    n1    n2 statistic           p      p.adj p.adj.signif
-#* <chr> <chr>  <chr>  <int> <int>     <dbl>       <dbl>      <dbl> <chr>       
-#1 bs    0      5         15    67    0.0745 0.941       0.941      ns          
-#2 bs    0      10        15    42   -3.17   0.00155     0.00309    **          
-#3 bs    5      10        67    42   -4.95   0.000000756 0.00000227 **** 
-
-
-# F only:  0      5      
-#	5  0.78549 -      
-#  10 0.00304 0.00023
-
-
-#   0       5      
-#5  0.69    -      
-#10 3.1e-05 4.3e-09
-
-
+Sbs <- filter(BS, SelectionStatus == "S")		
 dunn_test(Sbs, bs ~ Generation)
 #.y.   group1 group2    n1    n2 statistic             p         p.adj p.adj.signif
 #* <chr> <chr>  <chr>  <int> <int>     <dbl>         <dbl>         <dbl> <chr>       
@@ -85,121 +43,58 @@ dunn_test(Sbs, bs ~ Generation)
 #3 bs    5      10       133    92    -6.03  0.00000000165 0.00000000496 ****   
 
 
-#2nd, also sort by GENERATION.TO TEST DIFFERENCES BTWN SELECTION STATUS
-G0bs <- filter(BS,  Generation == "0")		#testing only G0
-
-pairwise.wilcox.test(G0bs$bs, G0bs$SelectionStatus)
-#  M only: RS  
-#S 0.069
-
-# F only: RS  
-#S 0.035
-
-
-#  RS    
-#S 0.0028
-
+#2nd, also sort by Generation. To test differences between selection status
+G0bs <- filter(BS,  Generation == "0")	
 dunn_test(G0bs, bs ~ SelectionStatus)
 #.y.   group1 group2    n1    n2 statistic       p   p.adj p.adj.signif
 #* <chr> <chr>  <chr>  <int> <int>     <dbl>   <dbl>   <dbl> <chr>       
 #1 bs    RS     S         91    34      2.99 0.00280 0.00280 **
 
 
-G5bs <- filter(BS,   Generation == "5")		#testing only G5
-
-pairwise.wilcox.test(G5bs$bs, G5bs$SelectionStatus)
-#  M only: RS  
-#S 0.017
-
-# F only: RS  
-#S 0.48
-
-
-#  RS  
-#S 0.04
-
+G5bs <- filter(BS,   Generation == "5")	
 dunn_test(G5bs, bs ~ SelectionStatus)
-
-G10bs <- filter(BS,  Generation == "10")		#testing only G10
 #.y.   group1 group2    n1    n2 statistic      p  p.adj p.adj.signif
 #* <chr> <chr>  <chr>  <int> <int>     <dbl>  <dbl>  <dbl> <chr>       
 #1 bs    RS     S         76   133      2.05 0.0403 0.0403 *  
 
-pairwise.wilcox.test(G10bs$bs, G10bs$SelectionStatus)
-#  M only: RS 
-#S 8.5e-08
-
-#  RS     
-#S 1.9e-11
-
+G10bs <- filter(BS,  Generation == "10")		
 dunn_test(G10bs, bs ~ SelectionStatus)
 #.y.   group1 group2    n1    n2 statistic        p    p.adj p.adj.signif
 #* <chr> <chr>  <chr>  <int> <int>     <dbl>    <dbl>    <dbl> <chr>       
-#1 bs    RS     S         99    92     -6.72 1.84e-11 1.84e-11 **** 
+#1 bs    RS     S         99    92     -6.72 1.84e-11 1.84e-11 ****
 
-#3rd, sort by both GENERATION & SELECTION STATUS. TO TEST DIFFERENCES BTWN SEXES
-G0bsRS <- filter(G0bs, SelectionStatus == "RS")		#testing only G0
-
-pairwise.wilcox.test(G0bsRS$bs, G0bsRS$sex)
-#   female
-#male 0.01
-
+#3rd, sort by BOTH Generation & Selection Status (Group). To test differences between sexes
+G0bsRS <- filter(G0bs, SelectionStatus == "RS")
 dunn_test(G0bsRS, bs ~ sex)
 #.y.   group1 group2    n1    n2 statistic      p  p.adj p.adj.signif
 #* <chr> <chr>  <chr>  <int> <int>     <dbl>  <dbl>  <dbl> <chr>       
-#1 bs    female male      44    47     -2.57 0.0103 0.0103 *  
+#1 bs    female male      44    47     -2.57 0.0103 0.0103 *
 
-G0bsS <- filter(G0bs, SelectionStatus == "S")		#testing only G0
-
-pairwise.wilcox.test(G0bsS$bs, G0bsS$sex)
-#   female
-#male 0.23 
-
+G0bsS <- filter(G0bs, SelectionStatus == "S")		
 dunn_test(G0bsS, bs ~ sex)
 #.y.   group1 group2    n1    n2 statistic     p p.adj p.adj.signif
 #* <chr> <chr>  <chr>  <int> <int>     <dbl> <dbl> <dbl> <chr>       
-#1 bs    female male      19    15     -1.21 0.226 0.226 ns 
+#1 bs    female male      19    15     -1.21 0.226 0.226 ns
 
-G5bsRS <- filter(G5bs, SelectionStatus == "RS")		#testing only G5
-
-pairwise.wilcox.test(G5bsRS$bs, G5bsRS$sex)
-#   female
-#male 3e-05
-
+G5bsRS <- filter(G5bs, SelectionStatus == "RS")	
 dunn_test(G5bs, bs ~ sex)
 #.y.   group1 group2    n1    n2 statistic        p    p.adj p.adj.signif
 #* <chr> <chr>  <chr>  <int> <int>     <dbl>    <dbl>    <dbl> <chr>       
 #1 bs    female male     103   106     -3.62 0.000296 0.000296 *** 
 
-
-G5bsS <- filter(G5bs, SelectionStatus == "S")		#testing only G5
-
-pairwise.wilcox.test(G5bsS$bs, G5bsS$sex)
-#   female
-#male 0.042
-
+G5bsS <- filter(G5bs, SelectionStatus == "S")		
 dunn_test(G5bsS, bs ~ sex)
 #.y.   group1 group2    n1    n2 statistic      p  p.adj p.adj.signif
 #* <chr> <chr>  <chr>  <int> <int>     <dbl>  <dbl>  <dbl> <chr>       
-#1 bs    female male      66    67     -2.04 0.0413 0.0413 *    
+#1 bs    female male      66    67     -2.04 0.0413 0.0413 *  
 
-G10bsRS <- filter(G10bs, SelectionStatus == "RS")		#testing only G10
-
-pairwise.wilcox.test(G10bsRS$bs, G10bsRS$sex)
-#   female
-#male 0.0015
-
+G10bsRS <- filter(G10bs, SelectionStatus == "RS")
 dunn_test(G10bsRS, bs ~ sex)
 #.y.   group1 group2    n1    n2 statistic       p   p.adj p.adj.signif
 #* <chr> <chr>  <chr>  <int> <int>     <dbl>   <dbl>   <dbl> <chr>       
-#1 bs    female male      50    49     -3.17 0.00151 0.00151 **    
+#1 bs    female male      50    49     -3.17 0.00151 0.00151 **  
 
-G10bsS <- filter(G10bs, SelectionStatus == "S")		#testing only G10
-
-pairwise.wilcox.test(G10bsS$bs, G10bsS$sex)
-#   female
-#male 0.0018 
-
+G10bsS <- filter(G10bs, SelectionStatus == "S")		
 dunn_test(G10bsS, bs ~ sex)
 #.y.   group1 group2    n1    n2 statistic       p   p.adj p.adj.signif
 #* <chr> <chr>  <chr>  <int> <int>     <dbl>   <dbl>   <dbl> <chr>       
@@ -233,26 +128,32 @@ summary(bs1) #all significant
 #################################################################################
 
 Random effects:
-  Groups    Name        Variance  Std.Dev.
+    Groups    Name        Variance  Std.Dev.
 replicate (Intercept) 0.0004679 0.02163 
 Residual              0.0041764 0.06463 
 Number of obs: 525, groups:  replicate, 6
 
 Fixed effects:
-  Estimate Std. Error         df t value Pr(>|t|)    
+                                Estimate Std. Error         df t value Pr(>|t|)    
 (Intercept)                     0.848084   0.011158  10.331104  76.006 1.54e-15 ***
-  Generation5                     0.023878   0.010510 498.110443   2.272   0.0235 *  
-  Generation10                    0.046699   0.009846 491.194180   4.743 2.77e-06 ***
-  SelectionStatusS                0.052378   0.013346 514.971455   3.925 9.86e-05 ***
-  Generation5:SelectionStatusS   -0.033339   0.016282 518.468827  -2.048   0.0411 *  
-  Generation10:SelectionStatusS  -0.123227   0.016303 518.592859  -7.559 1.86e-13 ***
-  ---
-  Signif. codes:  0 '***' 0.001 '**' 0.01 '*' 0.05 '.' 0.1 ' ' 1
+Generation5                     0.023878   0.010510 498.110443   2.272   0.0235 *  
+Generation10                    0.046699   0.009846 491.194180   4.743 2.77e-06 ***
+SelectionStatusS                0.052378   0.013346 514.971455   3.925 9.86e-05 ***
+Generation5:SelectionStatusS   -0.033339   0.016282 518.468827  -2.048   0.0411 *  
+Generation10:SelectionStatusS  -0.123227   0.016303 518.592859  -7.559 1.86e-13 ***
+    ---
+    Signif. codes:  0 '***' 0.001 '**' 0.01 '*' 0.05 '.' 0.1 ' ' 1
 
 #################################################################################
+#https://stats.stackexchange.com/questions/5250/multiple-comparisons-on-a-mixed-effects-model
+
+library(multcomp)
+BS$GS <- interaction(BS$Generation, BS$SelectionStatus)
+model <- lmer(bs~GS + (1|replicate),data=BS)
+comp.GS <- glht(model, linfct=mcp(GS="Tukey")) 
+summary(comp.GS)
 
 #--------MBody Size------------
-
 BS<- read.csv("C:\\Users\\Nicole Lee\\Desktop\\Pamela analyses check\\BS Significance\\Bodysize Only_G0510.csv",na.strings = "NA",header=T)
 MBS<- filter(BS, sex == "male")
 
@@ -268,7 +169,7 @@ kruskal.test(bs ~ Generation, data = MBS) #p-value less than sig 0.05, can concl
 
 
 #Multiple pairwise-comparison between groups
-# From Kruskal wallis, we don't know which pairs of groups are different -> can use pairwise.wilcox.test() to calculate pairwise comparisons between group levels with corrections for multiple testing.
+# From Kruskal wallis, we don't know which pairs of groups are different -> use dunn_test() to calculate post hoc pairwise multiple comparison
 #1st, sort by Selection Status. TO TEST DIFFERENCES BTWN GENERATIONS
 
 MRSbs <- filter(MBS, SelectionStatus == "RS")	#testing only Relaxed Selection for Parental,5th and 10th gen
@@ -330,7 +231,7 @@ AICtable(AIC(bs1,bs2,bs3,bs4,bsNULL))
 qqnorm(resid(bs1)) #https://stats.stackexchange.com/questions/77891/checking-assumptions-lmer-lme-mixed-models-in-r
 qqline(resid(bs1))
 plot(bs1)
-summary(bs1) #only G5 & G5:SelectionStatus not significant
+summary(bs1) #only G5 & G5:SelectionStatusS not significant
 
 #################################################################################
 Random effects:
@@ -371,7 +272,7 @@ kruskal.test(bs ~ Generation, data = FBS) #p-value less than sig 0.05, can concl
 
 
 #Multiple pairwise-comparison between groups
-# From Kruskal wallis, we don't know which pairs of groups are different -> can use pairwise.wilcox.test() to calculate pairwise comparisons between group levels with corrections for multiple testing.
+# From Kruskal wallis, we don't know which pairs of groups are different -> use dunn_test() to calculate post hoc pairwise multiple comparison
 
 #1st, sort by Selection Status. TO TEST DIFFERENCES BTWN GENERATIONS
 
@@ -447,7 +348,7 @@ Fixed effects:
   Estimate Std. Error      df t value Pr(>|t|)    
 (Intercept)  0.88770    0.01043 4.97336   85.11 4.62e-09 ***
   
-  ################################################################################
+################################################################################
 
 #--------Testes Size------------
 #cleaned up "D:\\UG UROPS Pamela Kuan\\POST UROPS SAVE ME\\Manuscript\\Data Files\\full_model_avgts_updated.csv" -> "MTestesVolumeOnly_G0510.csv"
@@ -466,7 +367,7 @@ shapiro.test(TVmod$avgts) #p-value < 0.05 implying that the data significantly d
 kruskal.test(avgts ~ Generation, data = TVmod) #p-value less than sig 0.05, can conclude sig diffs between groups.
 
 #Multiple pairwise-comparison between groups
-# From Kruskal wallis, we don't know which pairs of groups are different -> can use pairwise.wilcox.test() to calculate pairwise comparisons between group levels with corrections for multiple testing.
+# From Kruskal wallis, we don't know which pairs of groups are different -> use dunn_test() to calculate post hoc pairwise multiple comparison
 
 #1st, sort by Selection Status. TO TEST DIFFERENCES BTWN GENERATIONS
 
@@ -528,7 +429,6 @@ tvNULL <- lmer(avgts~1 + (1|replicate),data=TVmod)
 
 AIC(tv1,tv2,tv3,tv4,tv5,tv6,tv7,tv8,tvNULL)
 AICtable(AIC(tv1,tv2,tv3,tv4,tv5,tv6,tv7,tv8,tvNULL))	#tv4 is the best model
-AICc(tv1,tv2,tv3,tv4,tv5,tv6,tv7,tv8,tvNULL)
 model.sel(tv1,tv2,tv3,tv4,tv5,tv6,tv7,tv8,tvNULL)
 
 plot(tv4)
@@ -538,20 +438,20 @@ summary(tv4)  #bs is significant
 
 ################################################################################
 Random effects:
-  Groups    Name        Variance  Std.Dev. 
+Groups    Name        Variance  Std.Dev. 
 replicate (Intercept) 4.020e-09 0.0000634
 Residual              2.969e-06 0.0017231
 Number of obs: 219, groups:  replicate, 6
 
 Fixed effects:
-  Estimate Std. Error         df t value Pr(>|t|)    
+Estimate Std. Error         df t value Pr(>|t|)    
 (Intercept)  -0.009786   0.001428 192.956034  -6.854  9.4e-11 ***
-  bs            0.017619   0.001663 194.521463  10.592  < 2e-16 ***
-  ---
-  Signif. codes:  0 '***' 0.001 '**' 0.01 '*' 0.05 '.' 0.1 ' ' 1
+bs            0.017619   0.001663 194.521463  10.592  < 2e-16 ***
+---
+Signif. codes:  0 '***' 0.001 '**' 0.01 '*' 0.05 '.' 0.1 ' ' 1
 
 Correlation of Fixed Effects:
-  (Intr)
+(Intr)
 bs -0.996
 ################################################################################
 
@@ -572,7 +472,7 @@ shapiro.test(SLmod1$avgss) #p-value < 0.05 implying that the data significantly 
 kruskal.test(avgss ~ Generation, data = SLmod1) #p-value less than sig 0.05, can conclude sig diffs between groups.
 
 #Multiple pairwise-comparison between groups
-# From Kruskal wallis, we don't know which pairs of groups are different -> can use pairwise.wilcox.test() to calculate pairwise comparisons between group levels with corrections for multiple testing.
+# From Kruskal wallis, we don't know which pairs of groups are different -> use dunn_test() to calculate post hoc pairwise multiple comparison
 
 #1st, sort by Selection Status. TO TEST DIFFERENCES BTWN GENERATIONS
 RSsl <- filter(SLmod1, SelectionStatus == "RS")		#testing only Relaxed Selection Parental,5th and 10th gen
@@ -632,69 +532,73 @@ sl10 <- lmer(avgss~SelectionStatus*Generation + (1|replicate),data=SLmod1)
 sl11 <- lmer(avgss~Generation + SelectionStatus + bs +(1|replicate),data=SLmod1)
 slNULL <- lmer(avgss~1 + (1|replicate),data=SLmod1)
 
-
-# sl1 summary makes more biological sense. remove testes interactions
-#sl12 <- lmer(avgss~Generation*SelectionStatus*bs*avgts + (1|replicate),data=SLmod1) ##removed. too many interactions. reduce to "+"
-#sl24 <-  lmer(avgss~Generation*SelectionStatus*bs + avgts + (1|replicate),data=SLmod1)
-#sl25 <- lmer(avgss~Generation + SelectionStatus*bs*avgts + (1|replicate),data=SLmod1)
-#sl26 <-lmer(avgss~Generation*bs*avgts + SelectionStatus + (1|replicate),data=SLmod1)
-#sl27 <-lmer(avgss~Generation*SelectionStatus*avgts + bs + (1|replicate),data=SLmod1)
-#sl13 <- lmer(avgss~Generation + SelectionStatus + bs + avgts + (1|replicate),data=SLmod1)
-#sl14	<-	lmer(avgss~SelectionStatus + bs + avgts + (1|replicate),data=SLmod1)
-#sl15	<-	lmer(avgss~bs + avgts + (1|replicate),data=SLmod1)
-#sl16	<-	lmer(avgss~avgts + (1|replicate),data=SLmod1)
-#sl17	<-	lmer(avgss~Generation + bs + avgts + (1|replicate),data=SLmod1)
-#sl18	<-	lmer(avgss~Generation + avgts + (1|replicate),data=SLmod1)
-#sl19	<-	lmer(avgss~bs*avgts + (1|replicate),data=SLmod1)
-#sl20	<-	lmer(avgss~SelectionStatus*bs*avgts + (1|replicate),data=SLmod1)
-#sl21	<-	lmer(avgss~SelectionStatus*avgts + (1|replicate),data=SLmod1)
-#sl22	<-	lmer(avgss~Generation*avgts + (1|replicate),data=SLmod1)
-#sl23	<-	lmer(avgss~avgts + (1|replicate),data=SLmod1)
-
+#did not add testes interactions as do not make biological sense (testes size is proxy for sperm no. not sperm length https://royalsocietypublishing.org/doi/10.1098/rstb.2020.0064)
 
 #Without testes
 AIC(sl1,sl2,sl3,sl4,sl5,sl6,sl7,sl8,sl9,sl10,sl11, slNULL)
 AICtable(AIC(sl1,sl2,sl3,sl4,sl5,sl6,sl7,sl8,sl9,sl10,sl11, slNULL))
 
-#All models except sl12 (too many interactions)
-#AIC(sl1,sl2,sl3,sl4,sl5,sl6,sl7,sl8,sl9,sl10,sl11,sl12, sl13, sl14, sl15, sl16, sl17, sl18, sl19, sl20, sl21, sl22, sl23, sl24, sl25, sl26, sl27, slNULL)
-#AICtable(AIC(sl1,sl2,sl3,sl4,sl5,sl6,sl7,sl8,sl9,sl10,sl11, sl12, sl13, sl14, sl15, sl16, sl17, sl18, sl19, sl20, sl21, sl22, sl23,  sl24, sl25, sl26, sl27,slNULL))
-
-
 plot(sl1)
 qqnorm(resid(sl1))
 qqline(resid(sl1))
-summary(sl1)	#  significant
-
-#summary(sl12)	
-#summary(sl26)	
-#plot(sl26)
-#qqnorm(resid(sl26))
-#qqline(resid(sl26))
+summary(sl1)	
 
 ##################################################################################################################
+Formula: avgss ~ Generation * SelectionStatus * bs + (1 | replicate)
+Data: SLmod1
+
+REML criterion at convergence: 1485.8
+
+Scaled residuals: 
+     Min       1Q   Median       3Q      Max 
+-3.03646 -0.53804  0.06088  0.59606  2.87223 
+
 Random effects:
-  Groups    Name        Variance Std.Dev.
-replicate (Intercept)  26.9     5.186  
-Residual              145.3    12.052  
+Groups    Name        Variance Std.Dev.
+replicate (Intercept)  31.73    5.633  
+Residual              139.15   11.796  
 Number of obs: 201, groups:  replicate, 6
 
 Fixed effects:
-  Estimate Std. Error         df t value Pr(>|t|)    
-(Intercept)              374.705     52.346    187.245   7.158  1.8e-11 ***
-  Generation5             -191.656     76.109    187.038  -2.518  0.01263 *  
-  Generation10            -105.807     64.793    183.657  -1.633  0.10418    
-bs                      -108.182     62.870    186.890  -1.721  0.08696 .  
-avgts                  -6723.607   9340.025    185.358  -0.720  0.47251    
-SelectionStatusS          -3.500      2.105    185.669  -1.663  0.09809 .  
-Generation5:bs           238.432     89.761    187.090   2.656  0.00858 ** 
-  Generation10:bs          115.103     78.110    183.955   1.474  0.14230    
-Generation5:avgts       9873.449  13213.581    186.113   0.747  0.45587    
-Generation10:avgts      9736.203  13053.126    183.821   0.746  0.45669    
-bs:avgts               10469.613  10723.640    185.661   0.976  0.33018    
-Generation5:bs:avgts  -14662.025  14921.445    186.221  -0.983  0.32707    
-Generation10:bs:avgts -11658.792  15032.132    183.781  -0.776  0.43899   
+                                 Estimate Std. Error      df t value Pr(>|t|)    
+(Intercept)                        347.61      26.64  188.45  13.049  < 2e-16 ***
+Generation5                        -66.26      62.03  184.44  -1.068  0.28684    
+Generation10                       -90.19      52.63  188.72  -1.714  0.08823 .  
+SelectionStatusS                  -115.60      42.45  185.30  -2.723  0.00709 ** 
+bs                                 -62.94      31.88  186.28  -1.975  0.04980 *  
+Generation5:SelectionStatusS        22.99      74.19  185.61   0.310  0.75702    
+Generation10:SelectionStatusS       79.11      66.82  188.52   1.184  0.23792    
+Generation5:bs                      79.70      71.88  184.43   1.109  0.26895    
+Generation10:bs                     92.11      60.44  188.71   1.524  0.12917    
+SelectionStatusS:bs                124.45      49.09  185.35   2.535  0.01208 *  
+Generation5:SelectionStatusS:bs    -28.26      85.17  185.42  -0.332  0.74042    
+Generation10:SelectionStatusS:bs   -76.95      77.14  188.45  -0.998  0.31979    
+---
+Signif. codes:  0 ‘***’ 0.001 ‘**’ 0.01 ‘*’ 0.05 ‘.’ 0.1 ‘ ’ 1
+
+Correlation of Fixed Effects:
+            (Intr) Gnrtn5 Gnrt10 SlctSS bs     Gn5:SSS Gn10:SSS Gnrt5: Gnr10: SlcSS:
+Generation5 -0.402                                                                  
+Generatin10 -0.522  0.240                                                           
+SelctnSttsS -0.622  0.238  0.307                                                    
+bs          -0.994  0.402  0.522  0.622                                             
+Gnrtn5:SlSS  0.334 -0.835 -0.183 -0.557 -0.333                                      
+Gnrtn10:SSS  0.410 -0.180 -0.787 -0.642 -0.409  0.376                               
+Genertn5:bs  0.417 -0.999 -0.249 -0.247 -0.419  0.832   0.186                       
+Genrtn10:bs  0.544 -0.249 -0.998 -0.321 -0.546  0.190   0.786    0.259              
+SlctnSttsS:  0.645 -0.247 -0.316 -0.996 -0.648  0.553   0.635    0.257  0.332       
+Gnrtn5:SSS: -0.350  0.841  0.191  0.558  0.351 -0.998  -0.376   -0.841 -0.199 -0.559
+Gnrt10:SSS: -0.425  0.185  0.781  0.641  0.426 -0.376  -0.997   -0.192 -0.782 -0.640
+            G5:SSS:
+Generation5        
+Generatin10        
+SelctnSttsS        
+bs                 
+Gnrtn5:SlSS        
+Gnrtn10:SSS        
+Genertn5:bs        
+Genrtn10:bs        
+SlctnSttsS:        
+Gnrtn5:SSS:        
+Gnrt10:SSS:  0.379 
 ##################################################################################################################
-
-
-
