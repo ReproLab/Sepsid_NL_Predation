@@ -143,3 +143,55 @@ legend(
   pt.cex=c(1.5,1.5),
   lty=c(1,1)
 )
+
+################################################# Plotting individual replicates ###################################################
+
+BS1<- read.csv("C:\\Users\\Nicole Lee\\Desktop\\Pamela analyses check\\BS Significance\\Bodysize Only_G0510.csv",na.strings = "NA",header=T)
+
+
+colnames(BS1)[colnames(BS1) == 'SelectionStatus'] <- 'Group'
+BS1$Group <- ordered(BS1$Group, levels=c("RS","S"))
+
+levels(BS1$Group)[levels(BS1$Group) == "RS"]  <- "Control"
+
+levels(BS1$Group)[levels(BS1$Group) == "S"]  <- "Treatment"
+
+library(Rmisc)
+library(ggplot2)
+library(dplyr)
+#need remove NAs
+BS<-na.omit(BS1) 
+str(BS)
+BS$replicate <- as.factor(BS$replicate)
+BS$Generation <- as.factor(BS$Generation)
+BS$sex <- factor(BS$sex, levels = c("male", "female"))
+BS <- filter(BS, replicate != 0)
+
+colnames(BS)[colnames(BS) == 'replicate'] <- 'Replicate'
+
+#M only
+MBS <- filter(BS, sex == "male")
+MBSC <- summarySE(MBS, measurevar="bs", groupvars=c("Generation","Group", "Replicate"))
+
+# Standard error of the mean
+ggplot(MBSC, aes(x=Generation, y=bs, color=Group, shape=Replicate)) + 
+  geom_errorbar(aes(ymin=bs-se, ymax=bs+se), width=.1) +
+  geom_point()+
+  geom_line(aes(group=Group))+
+  facet_wrap(~ Replicate) +
+  labs(title = "Male Body Size", y = "Head Width (mm)") + 
+  theme_bw() +theme(plot.title = element_text(hjust = 0.5, face = "bold"), panel.grid.major = element_blank(), panel.grid.minor = element_blank())
+
+
+#F only
+FBS <- filter(BS, sex == "female")
+FBSC <- summarySE(FBS, measurevar="bs", groupvars=c("Generation","Group", "Replicate"))
+
+# Standard error of the mean
+ggplot(FBSC, aes(x=Generation, y=bs, color=Group, shape=Replicate)) + 
+  geom_errorbar(aes(ymin=bs-se, ymax=bs+se), width=.1) +
+  geom_point()+
+  geom_line(aes(group=Group))+
+  facet_wrap(~ Replicate)+ 
+  ggtitle("Female Body Size")+ 
+  theme_bw() +theme(plot.title = element_text(hjust = 0.5, face = "bold"), panel.grid.major = element_blank(), panel.grid.minor = element_blank())
