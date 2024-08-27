@@ -1,5 +1,5 @@
 #Import Data
-coact <- read.csv("C:\\Users\\Nicole Lee\\Desktop\\Pamela analyses check\\Behaviour tests\\Baseline_behavioural data.csv")
+coact <- read.csv("~\\Baseline_behavioural data.csv")
 
 library(dplyr)
 str(coact)
@@ -44,7 +44,7 @@ title(main="Baseline Number of Courtship")
 
 
 ####Courtship plots squeezed####
-#load all necessary objects first
+#load all necessary objects (baseline courtship & courtship no.s plots) first
 par(mfrow=c(3,1), mar=c(5, 4.5, 3, 1) + 0.1)
 
 
