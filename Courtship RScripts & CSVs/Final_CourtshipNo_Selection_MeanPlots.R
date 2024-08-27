@@ -50,7 +50,7 @@ plotCI(y=RSmanmean, x=1:3, uiw=RSmanSE, err='y', xaxt='n', xlab="", ylab="Number
 legend(
   x=1, # x coordinate of the top left of the legend
   y=500, # y coordinate of the top left of the legend
-  legend=c("Empty Vial","Mantid"), # sequence of text for the legend
+  legend=c("Empty Vial","Mantid Vial"), # sequence of text for the legend
   pch=c(24,21), # sequence of point types for the legend; -1 is a nonexistent point
   pt.bg=c("#FF6600","maroon"), # sequence of fill colours for the points
   pt.cex=c(1.5,1.8),
@@ -96,7 +96,7 @@ plotCI(y=Smanmean, x=1:3, uiw=SmanSE, err='y', xaxt='n', xlab="", ylab="Number o
 legend(
   x=1, # x coordinate of the top left of the legend
   y=500, # y coordinate of the top left of the legend
-  legend=c("Empty Vial","Mantid"), # sequence of text for the legend
+  legend=c("Empty Vial","Mantid Vial"), # sequence of text for the legend
   pch=c(24,21), # sequence of point types for the legend; -1 is a nonexistent point
   pt.bg=c("#3399CC","dark blue"), # sequence of fill colours for the points
   pt.cex=c(1.5,1.8),
@@ -124,7 +124,7 @@ plotCI(y=RSmanmean, x=1:3, uiw=RSmanSE, err='y', xaxt='n', xlab="", ylab="Number
 legend(
   x=0.75, # x coordinate of the top left of the legend
   y=500, # y coordinate of the top left of the legend
-  legend=c("Empty Vial","Mantid"), # sequence of text for the legend
+  legend=c("Empty Vial","Mantid Vial"), # sequence of text for the legend
   pch=c(24,21), # sequence of point types for the legend; -1 is a nonexistent point
   pt.bg=c("#FF6600","maroon"), # sequence of fill colours for the points
   pt.cex=c(1.5,1.8),
@@ -147,7 +147,7 @@ plotCI(y=Smanmean, x=1:3, uiw=SmanSE, err='y', xaxt='n', xlab="", ylab="Number o
 legend(
   x=0.75, # x coordinate of the top left of the legend
   y=500, # y coordinate of the top left of the legend
-  legend=c("Empty Vial","Mantid"), # sequence of text for the legend
+  legend=c("Empty Vial","Mantid Vial"), # sequence of text for the legend
   pch=c(24,21), # sequence of point types for the legend; -1 is a nonexistent point
   pt.bg=c("#3399CC","dark blue"), # sequence of fill colours for the points
   pt.cex=c(1.5,1.8),
