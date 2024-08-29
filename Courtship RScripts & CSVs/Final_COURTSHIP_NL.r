@@ -226,16 +226,20 @@ dunn_test(csS, CourtshipNumber ~ Treatment)
 # 		---Empty Vial---
 csSEV <- filter(cs, Type == "S", Treatment == "Empty Vial")		
 View(csSEV)
-pairwise.wilcox.test(csSEV$CourtshipNumber, csSEV$Generation)
-#	          After 10th After 5th
-#	After 5th 0.40       -        
-#	Parental  0.40       0.17   
+dunn_test(csSEV, CourtshipNumber ~ Generation)
+# .y.             group1     group2       n1    n2 statistic        p    p.adj p.adj.signif
+#* <chr>           <chr>      <chr>     <int> <int>     <dbl>    <dbl>    <dbl> <chr>       
+#1 CourtshipNumber After 10th After 5th     4     4      1.18 0.239  0.479  ns          
+#2 CourtshipNumber After 10th Parental      4     4     -1.18 0.239  0.479  ns          
+#3 CourtshipNumber After 5th  Parental      4     4     -2.35 0.0186 0.0558 ns  
 
 
 # 		---Mantis Vial---
 csSMV <- filter(cs, Type == "S", Treatment == "Mantis Vial")		
 View(csSMV)
-pairwise.wilcox.test(csSMV$CourtshipNumber, csSMV$Generation)
-#	          After 10th After 5th
-#	After 5th 0.886      -        
-#	Parental  0.491      0.086   
+dunn_test(csSMV, CourtshipNumber ~ Generation)
+# .y.             group1     group2       n1    n2 statistic        p    p.adj p.adj.signif
+#* <chr>           <chr>      <chr>     <int> <int>     <dbl>    <dbl>    <dbl> <chr>       
+#1 CourtshipNumber After 10th After 5th     4     4     0.540 0.589  0.589 ns          
+#2 CourtshipNumber After 10th Parental      4     4    -1.57  0.116  0.232 ns          
+#3 CourtshipNumber After 5th  Parental      4     4    -2.11  0.0347 0.104 ns 
