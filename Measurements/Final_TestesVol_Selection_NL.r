@@ -1,5 +1,5 @@
 #Import Data
-TV <- read.csv("C:\\Users\\Nicole Lee\\Desktop\\Pamela analyses check\\TV Significance\\MTestesVolumeOnly_G0510.csv",na.strings = "NA",header=T)
+TV <- read.csv("~/MTestesVolumeOnly_G0510.csv",na.strings = "NA",header=T)
 
 library(dplyr)
 str(TV)
@@ -60,26 +60,3 @@ legend(
 
 
 # printed as filename = "MTestesVolume Only_G0510.png"
-
-############################# Plotting individual replicates #################################
-
-
-TV <- filter(TV, replicate != 0)
-
-colnames(TV)[colnames(TV) == 'SelectionStatus'] <- 'Group'
-levels(TV$Group)[levels(TV$Group) == "RS"]  <- "Control"
-levels(TV$Group)[levels(TV$Group) == "S"]  <- "Treatment"
-colnames(TV)[colnames(TV) == 'replicate'] <- 'Replicate'
-
-TVC <- summarySE(TV, measurevar="avgts", groupvars=c("Generation","Group", "Replicate"))
-
-# Standard error of the mean
-ggplot(TVC, aes(x=Generation, y=avgts, color=Group, shape=Replicate)) + 
-  geom_errorbar(aes(ymin=avgts-se, ymax=avgts+se), width=.1) +
-  geom_point()+
-  geom_line(aes(group=Group))+
-  facet_wrap(~ Replicate) +
-  labs(title = "Testes Volume", y = expression("Volume of Testes " ~ (mm^{3}))) + 
-  ggtitle("Testes Volume")+ 
-  theme_bw() +theme(plot.title = element_text(hjust = 0.5, face = "bold"), panel.grid.major = element_blank(), panel.grid.minor = element_blank())
-
