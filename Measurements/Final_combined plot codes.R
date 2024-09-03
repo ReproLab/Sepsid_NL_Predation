@@ -23,7 +23,7 @@ plotCI(y=MBSSmean, x=(1:3), uiw=MBSSSE, err='y', xaxt='n', pch=15, col="#3399CC"
 legend(
   x=0.9, # x coordinate of the top left of the legend
   y=0.78, # y coordinate of the top left of the legend
-  legend=c("Control","Treatment"), # sequence of text for the legend
+  legend=c("Control","Predation"), # sequence of text for the legend
   pch=c(15,15), # sequence of point types for the legend; -1 is a nonexistent point
   col = c("#FF6600","#3399CC"),# sequence of fill colours for the points
   pt.cex=c(1.5,1.5),
@@ -48,7 +48,7 @@ plotCI(y=FBSSmean, x=(1:3), uiw=FBSSSE, err='y', xaxt='n', xlab="", col="#3399CC
 legend(
   x=0.9, # x coordinate of the top left of the legend
   y=0.78, # y coordinate of the top left of the legend
-  legend=c("Control","Treatment"), # sequence of text for the legend
+  legend=c("Control","Predation"), # sequence of text for the legend
   pch=c(15,15), # sequence of point types for the legend; -1 is a nonexistent point
   col = c("#FF6600","#3399CC"),# sequence of fill colours for the points
   pt.cex=c(1.5,1.5),
@@ -74,7 +74,7 @@ plotCI(y=TVSmean, x=(1:3), uiw=TVSSE, err='y', gap=0, xaxt='n', xlab="", pch=15,
 legend(
   x=1, # x coordinate of the top left of the legend
   y=0.0038, # y coordinate of the top left of the legend
-  legend=c("Control","Treatment"), # sequence of text for the legend
+  legend=c("Control","Predation"), # sequence of text for the legend
   pch=c(15,15), # sequence of point types for the legend; -1 is a nonexistent point
   col=c("#FF6600","#3399CC"), # sequence of fill colours for the points
   pt.cex=c(1.5,1.5),
@@ -99,7 +99,7 @@ plotCI(y=SLSmean, x=(1:3), uiw=SLSSE, err='y', xaxt='n', xlab="", pch=15,pt.bg="
 legend(
   x=1, # x coordinate of the top left of the legend
   y=253, # y coordinate of the top left of the legend
-  legend=c("Control","Treatment"), # sequence of text for the legend
+  legend=c("Control","Predation"), # sequence of text for the legend
   pch=c(15,15), # sequence of point types for the legend; -1 is a nonexistent point
   col=c("#FF6600","#3399CC"), # sequence of fill colours for the points
   pt.cex=c(1.5,1.5),
