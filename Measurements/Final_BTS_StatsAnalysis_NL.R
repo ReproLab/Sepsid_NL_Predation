@@ -11,11 +11,8 @@ library(rstatix)
 #--------Body Size------------
 
 BS<- read.csv("~/Bodysize Only_G0510.csv",na.strings = "NA",header=T)
-BS<- read.csv("C:\\Users\\Nicole Lee\\Desktop\\Pamela analyses check\\BS Significance\\Bodysize Only_G0510.csv",na.strings = "NA",header=T)
 
 shapiro.test(BS$bs) #p-value < 0.05 implying that the data significantly different from normal dist. AKA assume non-normality.
-
-#http://www.sthda.com/english/wiki/normality-test-in-r
 
 #Kruskal Wallis	
 kruskal.test(bs ~ Generation, data = BS) #p-value less than sig 0.05, can conclude sig diffs between groups.
@@ -113,14 +110,24 @@ bs2 <- lmer(bs~Generation + (1|replicate),data=BS)
 bs3 <- lmer(bs~SelectionStatus + (1|replicate),data=BS)
 bs4 <- lmer(bs~Generation + SelectionStatus + (1|replicate),data=BS)
 bsNULL <- lmer(bs~1 + (1|replicate),data=BS)
+bs5 <- lmer(bs~Generation*SelectionStatus*sex + (1|replicate),data=BS)
+bs6 <- lmer(bs~Generation+SelectionStatus+sex + (1|replicate),data=BS)
+bs7 <- lmer(bs~Generation*sex + (1|replicate),data=BS)
+bs8 <- lmer(bs~Generation+sex + (1|replicate),data=BS)
+bs9 <- lmer(bs~SelectionStatus*sex + (1|replicate),data=BS)
+bs10 <- lmer(bs~SelectionStatus+sex + (1|replicate),data=BS)
+bs11 <- lmer(bs~sex + (1|replicate),data=BS)
+
 
 AIC(bs1,bs2,bs3,bs4,bsNULL)
 #AICc(bs1,bs2,bs3,bs4,bsNULL)
 AICtable(AIC(bs1,bs2,bs3,bs4,bsNULL))
 library(MuMIn)
 model.sel(bs1,bs2,bs3,bs4,bsNULL)
+model.sel(bs1,bs2,bs3,bs4,bsNULL, bs5,bs6,bs7,bs8,bs9,bs10,bs11)
 
-qqnorm(resid(bs1)) #https://stats.stackexchange.com/questions/77891/checking-assumptions-lmer-lme-mixed-models-in-r
+
+qqnorm(resid(bs1))
 qqline(resid(bs1))
 plot(bs1)
 summary(bs1) #all significant
@@ -145,16 +152,10 @@ Generation10:SelectionStatusS  -0.123227   0.016303 518.592859  -7.559 1.86e-13 
     Signif. codes:  0 '***' 0.001 '**' 0.01 '*' 0.05 '.' 0.1 ' ' 1
 
 #################################################################################
-#https://stats.stackexchange.com/questions/5250/multiple-comparisons-on-a-mixed-effects-model
 
-library(multcomp)
-BS$GS <- interaction(BS$Generation, BS$SelectionStatus)
-model <- lmer(bs~GS + (1|replicate),data=BS)
-comp.GS <- glht(model, linfct=mcp(GS="Tukey")) 
-summary(comp.GS)
 
 #--------MBody Size------------
-BS<- read.csv("C:\\Users\\Nicole Lee\\Desktop\\Pamela analyses check\\BS Significance\\Bodysize Only_G0510.csv",na.strings = "NA",header=T)
+BS<- read.csv("~/Bodysize Only_G0510.csv",na.strings = "NA",header=T)
 MBS<- filter(BS, sex == "male")
 
 MBS$Generation <- as.factor(MBS$Generation)
@@ -162,7 +163,6 @@ MBS$replicate <- as.factor(MBS$replicate)
 MBS$id <- as.character(MBS$id)
 
 shapiro.test(MBS$bs) #p-value < 0.05 implying that the data significantly different from normal dist. AKA assume non-normality.
-#http://www.sthda.com/english/wiki/normality-test-in-r
 
 #Kruskal Wallis	
 kruskal.test(bs ~ Generation, data = MBS) #p-value less than sig 0.05, can conclude sig diffs between groups.
@@ -173,6 +173,7 @@ kruskal.test(bs ~ Generation, data = MBS) #p-value less than sig 0.05, can concl
 #1st, sort by Selection Status. TO TEST DIFFERENCES BTWN GENERATIONS
 
 MRSbs <- filter(MBS, SelectionStatus == "RS")	#testing only Relaxed Selection for Parental,5th and 10th gen
+kruskal.test(bs ~ Generation, data = MRSbs) #p-value less than sig 0.05, can conclude sig diffs between groups.
 dunn_test(MRSbs, bs ~ Generation)
 #.y.   group1 group2    n1    n2 statistic        p    p.adj p.adj.signif
 #* <chr> <chr>  <chr>  <int> <int>     <dbl>    <dbl>    <dbl> <chr>       
@@ -181,6 +182,8 @@ dunn_test(MRSbs, bs ~ Generation)
 #3 bs    5      10        39    49      2.18 0.0294   0.0587   ns  
 
 MSbs <- filter(MBS, SelectionStatus == "S")		#testing only Selection for Parental,5th and 10th gen
+kruskal.test(bs ~ Generation, data = MSbs) #p-value less than sig 0.05, can conclude sig diffs between groups.
+
 dunn_test(MSbs, bs ~ Generation)
 #.y.   group1 group2    n1    n2 statistic           p      p.adj p.adj.signif
 #* <chr> <chr>  <chr>  <int> <int>     <dbl>       <dbl>      <dbl> <chr>       
@@ -228,7 +231,7 @@ AIC(bs1,bs2,bs3,bs4,bsNULL)
 AICtable(AIC(bs1,bs2,bs3,bs4,bsNULL))
 
 
-qqnorm(resid(bs1)) #https://stats.stackexchange.com/questions/77891/checking-assumptions-lmer-lme-mixed-models-in-r
+qqnorm(resid(bs1))
 qqline(resid(bs1))
 plot(bs1)
 summary(bs1) #only G5 & G5:SelectionStatusS not significant
@@ -261,11 +264,10 @@ Gnrtn10:SSS  0.294 -0.291 -0.575 -0.822  0.683
 
 ################################################################################
 #--------F Body Size------------
-BS<- read.csv("C:\\Users\\Nicole Lee\\Desktop\\Pamela analyses check\\BS Significance\\Bodysize Only_G0510.csv",na.strings = "NA",header=T)
+BS<- read.csv("~/Bodysize Only_G0510.csv",na.strings = "NA",header=T)
 FBS<- filter(BS, sex == "female")
 FBS<-na.omit(FBS) 
 shapiro.test(FBS$bs) #p-value < 0.05 implying that the data significantly different from normal dist. AKA assume non-normality.
-#http://www.sthda.com/english/wiki/normality-test-in-r
 
 #Kruskal Wallis	
 kruskal.test(bs ~ Generation, data = FBS) #p-value less than sig 0.05, can conclude sig diffs between groups.
@@ -277,6 +279,7 @@ kruskal.test(bs ~ Generation, data = FBS) #p-value less than sig 0.05, can concl
 #1st, sort by Selection Status. TO TEST DIFFERENCES BTWN GENERATIONS
 
 FRSbs <- filter(FBS, SelectionStatus == "RS")	#testing only Relaxed Selection for Parental,5th and 10th gen
+kruskal.test(bs ~ Generation, data = FRSbs) #p-value less than sig 0.05, can conclude sig diffs between groups.
 dunn_test(FRSbs, bs ~ Generation)
 #.y.   group1 group2    n1    n2 statistic       p   p.adj p.adj.signif
 #* <chr> <chr>  <chr>  <int> <int>     <dbl>   <dbl>   <dbl> <chr>       
@@ -285,6 +288,7 @@ dunn_test(FRSbs, bs ~ Generation)
 #3 bs    5      10        37    50      1.04 0.296   0.296   ns 
 
 FSbs <- filter(FBS, SelectionStatus == "S")		#testing only Selection for Parental,5th and 10th gen
+kruskal.test(bs ~ Generation, data = FSbs) #p-value less than sig 0.05, can conclude sig diffs between groups.
 dunn_test(FSbs, bs ~ Generation)
 #  .y.   group1 group2    n1    n2 statistic         p    p.adj p.adj.signif
 #* <chr> <chr>  <chr>  <int> <int>     <dbl>     <dbl>    <dbl> <chr>       
@@ -333,7 +337,7 @@ AIC(bs1,bs2,bs3,bs4,bsNULL)
 AICtable(AIC(bs1,bs2,bs3,bs4,bsNULL))
 
 
-qqnorm(resid(bsNULL)) #https://stats.stackexchange.com/questions/77891/checking-assumptions-lmer-lme-mixed-models-in-r
+qqnorm(resid(bsNULL))
 qqline(resid(bsNULL))
 plot(bsNULL)
 summary(bsNULL)
@@ -351,8 +355,7 @@ Fixed effects:
 ################################################################################
 
 #--------Testes Size------------
-#cleaned up "D:\\UG UROPS Pamela Kuan\\POST UROPS SAVE ME\\Manuscript\\Data Files\\full_model_avgts_updated.csv" -> "MTestesVolumeOnly_G0510.csv"
-TVmod <- read.csv("C:\\Users\\Nicole Lee\\Desktop\\Pamela analyses check\\TV Significance\\MTestesVolumeOnly_G0510.csv")
+TVmod <- read.csv("~/MTestesVolumeOnly_G0510.csv")
 
 str(TVmod)
 TVmod$Generation <- as.factor(TVmod$Generation)
@@ -360,7 +363,6 @@ TVmod$replicate <- as.factor(TVmod$replicate)
 TVmod$id <- as.character(TVmod$id)
 
 shapiro.test(TVmod$avgts) #p-value < 0.05 implying that the data significantly different from normal dist. AKA assume non-normality.
-#http://www.sthda.com/english/wiki/normality-test-in-r
 
 
 #Kruskal Wallis	
@@ -372,6 +374,7 @@ kruskal.test(avgts ~ Generation, data = TVmod) #p-value less than sig 0.05, can 
 #1st, sort by Selection Status. TO TEST DIFFERENCES BTWN GENERATIONS
 
 RStv <- filter(TVmod,  SelectionStatus == "RS")		#testing only Relaxed Selection Parental,5th and 10th gen
+kruskal.test(avgts ~ Generation, data = RStv)
 dunn_test(RStv, avgts ~ Generation)
 #.y.   group1 group2    n1    n2 statistic        p   p.adj p.adj.signif
 #* <chr> <chr>  <chr>  <int> <int>     <dbl>    <dbl>   <dbl> <chr>       
@@ -426,10 +429,16 @@ tv6 <- lmer(avgts~bs*SelectionStatus + (1|replicate),data=TVmod)
 tv7 <- lmer(avgts~SelectionStatus*Generation + (1|replicate),data=TVmod)
 tv8 <- lmer(avgts~Generation + SelectionStatus + bs +(1|replicate),data=TVmod)
 tvNULL <- lmer(avgts~1 + (1|replicate),data=TVmod)
+tv9 <- lmer(avgts~Generation + SelectionStatus + (1|replicate),data=TVmod)
+tv10 <- lmer(avgts~Generation + bs + (1|replicate),data=TVmod)
+tv11 <- lmer(avgts~SelectionStatus + bs + (1|replicate),data=TVmod)
 
 AIC(tv1,tv2,tv3,tv4,tv5,tv6,tv7,tv8,tvNULL)
 AICtable(AIC(tv1,tv2,tv3,tv4,tv5,tv6,tv7,tv8,tvNULL))	#tv4 is the best model
-model.sel(tv1,tv2,tv3,tv4,tv5,tv6,tv7,tv8,tvNULL)
+#AIC(tv1,tv2,tv3,tv4,tv5,tv6,tv7,tv8,tvNULL, tv9, tv10, tv11)
+#AICtable(AIC(tv1,tv2,tv3,tv4,tv5,tv6,tv7,tv8,tvNULL, tv9, tv10, tv11))	#tv4 is the best model
+
+model.sel(tv1,tv2,tv3,tv4,tv5,tv6,tv7,tv8,tvNULL, tv9, tv10, tv11) #tv4 is the best model
 
 plot(tv4)
 qqnorm(resid(tv4))
@@ -458,7 +467,7 @@ bs -0.996
 
 
 #--------Sperm Length------------
-SLmod1 <- read.csv("C:\\Users\\Nicole Lee\\Desktop\\Pamela analyses check\\SL Significance\\MSpermLengthOnly_G0510.csv")
+SLmod1 <- read.csv("~/MSpermLengthOnly_G0510.csv")
 
 str(SLmod1)
 SLmod1$Generation <- as.factor(SLmod1$Generation)
@@ -466,7 +475,6 @@ SLmod1$replicate <- as.factor(SLmod1$replicate)
 SLmod1$id <- as.character(SLmod1$id)
 
 shapiro.test(SLmod1$avgss) #p-value < 0.05 implying that the data significantly different from normal dist. AKA assume non-normality.
-#http://www.sthda.com/english/wiki/normality-test-in-r
 
 #Kruskal Wallis	
 kruskal.test(avgss ~ Generation, data = SLmod1) #p-value less than sig 0.05, can conclude sig diffs between groups.
@@ -476,6 +484,7 @@ kruskal.test(avgss ~ Generation, data = SLmod1) #p-value less than sig 0.05, can
 
 #1st, sort by Selection Status. TO TEST DIFFERENCES BTWN GENERATIONS
 RSsl <- filter(SLmod1, SelectionStatus == "RS")		#testing only Relaxed Selection Parental,5th and 10th gen
+kruskal.test(avgss ~ Generation, data = RSsl)
 dunn_test(RSsl, avgss ~ Generation)
 #.y.   group1 group2    n1    n2 statistic        p   p.adj p.adj.signif
 #* <chr> <chr>  <chr>  <int> <int>     <dbl>    <dbl>   <dbl> <chr>       
@@ -484,6 +493,7 @@ dunn_test(RSsl, avgss ~ Generation)
 #3 avgss 5      10        26    40    -3.24  0.00121  0.00243 ** 
 
 Ssl <- filter(SLmod1, SelectionStatus == "S")		#testing only Selection Parental,5th and 10th gen
+kruskal.test(avgss ~ Generation, data = Ssl)
 dunn_test(Ssl, avgss ~ Generation)
 #.y.   group1 group2    n1    n2 statistic      p  p.adj p.adj.signif
 #* <chr> <chr>  <chr>  <int> <int>     <dbl>  <dbl>  <dbl> <chr>       
@@ -537,7 +547,7 @@ slNULL <- lmer(avgss~1 + (1|replicate),data=SLmod1)
 #Without testes
 AIC(sl1,sl2,sl3,sl4,sl5,sl6,sl7,sl8,sl9,sl10,sl11, slNULL)
 AICtable(AIC(sl1,sl2,sl3,sl4,sl5,sl6,sl7,sl8,sl9,sl10,sl11, slNULL))
-
+model.sel(sl1,sl2,sl3,sl4,sl5,sl6,sl7,sl8,sl9,sl10,sl11, slNULL)
 plot(sl1)
 qqnorm(resid(sl1))
 qqline(resid(sl1))
@@ -574,7 +584,7 @@ SelectionStatusS:bs                124.45      49.09  185.35   2.535  0.01208 *
 Generation5:SelectionStatusS:bs    -28.26      85.17  185.42  -0.332  0.74042    
 Generation10:SelectionStatusS:bs   -76.95      77.14  188.45  -0.998  0.31979    
 ---
-Signif. codes:  0 ‘***’ 0.001 ‘**’ 0.01 ‘*’ 0.05 ‘.’ 0.1 ‘ ’ 1
+Signif. codes:  0 '***' 0.001 '**' 0.01 '*' 0.05 '.' 0.1 ' ' 1
 
 Correlation of Fixed Effects:
             (Intr) Gnrtn5 Gnrt10 SlctSS bs     Gn5:SSS Gn10:SSS Gnrt5: Gnr10: SlcSS:
@@ -602,3 +612,4 @@ SlctnSttsS:
 Gnrtn5:SSS:        
 Gnrt10:SSS:  0.379 
 ##################################################################################################################
+
