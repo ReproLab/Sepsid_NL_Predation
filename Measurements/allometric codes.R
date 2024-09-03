@@ -3,16 +3,15 @@ library(ggplot2)
 
 ###################################### Body size vs Testes Volume ######################################
 
-data<-read.csv("C:\\Users\\Nicole Lee\\Desktop\\Pamela analyses check\\allometric plots\\MTestesVolumeOnly_G0510_addTreatmentcol.csv")
+data<-read.csv("~/MTestesVolumeOnly_G0510_addTreatmentcol.csv")
+
+#testing base relationship####
+ggplot(data=data,aes(x=bs,y=cbrtestes,colour=Treatment))+ geom_point(shape=19)+ geom_smooth(se=F)+ xlab("body size (mm)") + ylab("testes volume (mm)") +
+  ggtitle("G0510 Body Size against Testes Volume") +theme_light()
 
 #### G0510 ####
 ggplot(data=data,aes(x=logbs,y=logtestes,colour=Treatment))+ geom_point(shape=19)+ stat_smooth(method=lm,level=0)+ xlab("log (body size (mm))") + ylab("log (testes volume (mm))") +
   ylim(-0.96, -0.65) + xlim(-0.19, 0)+
-  ggtitle("G0510 Body Size against Testes Volume") +theme_light()
-
-
-#### G0510 testing base relationship####
-ggplot(data=data,aes(x=bs,y=cbrtestes,colour=Treatment))+ geom_point(shape=19)+ geom_smooth(se=F)+ xlab("body size (mm)") + ylab("testes volume (mm)") +
   ggtitle("G0510 Body Size against Testes Volume") +theme_light()
 
 
@@ -152,7 +151,7 @@ confint(model6)
 
 ###################################### Body size vs Sperm Length ######################################
 
-data<-read.csv("C:\\Users\\Nicole Lee\\Desktop\\Pamela analyses check\\allometric plots\\MSpermLengthOnly_G0510_addTreatmentcol.csv")
+data<-read.csv("~/MSpermLengthOnly_G0510_addTreatmentcol.csv")
 
 #### G0510 ####
 ggplot(data=data,aes(x=logbs,y=logsperm,colour=Treatment))+ geom_point(shape=19)+ stat_smooth(method=lm,level=0)+ xlab("log (body size (mm))") + ylab("log (sperm length (µm))") +
@@ -292,194 +291,3 @@ confint(model12)
 #                 2.5 %    97.5 %
 #(Intercept) 2.4604220 2.4974470
 #logbs       0.1080568 0.4476722
-
-
-
-
-###################################### Testes Volume vs Sperm Length ######################################
-
-data<-read.csv("C:\\Users\\Nicole Lee\\Desktop\\Pamela analyses check\\allometric plots\\MSpermLengthOnly_G0510_addTreatmentcol.csv")
-
-#### G0510 ####
-ggplot(data=data,aes(x=logtestes,y=logsperm,colour=Treatment))+ geom_point(shape=19)+ stat_smooth(method=lm,level=0)+ xlab("log (testes volume (mm))") + ylab("log (sperm length (µm))") +
-  ggtitle("G0510 Testes Volume against Sperm length") +theme_light()
-
-
-#### Plot G5 ( + baseline G0 for comparison) only ####
-G5 <- filter(data, Generation < 10)
-
-##allometric plot
-ggplot(data=G5,aes(x=logtestes,y=logsperm,colour=Treatment))+ geom_point(shape=19)+ stat_smooth(method=lm,level=0)+ xlab("log (testes volume (mm))") + ylab("log (sperm length (µm))") + 
-  ggtitle("G5 Testes Volume against Sperm length") +theme_light()+
-  #ylim(2.3, 2.5) +
-  geom_abline(intercept =3.375, slope = 1, color="gray55",linetype="dashed")
-
-G5B <- filter(G5, Treatment=="Baseline population")	
-G5RS <- filter(G5, Treatment=="Relaxed Selection")	
-G5S <- filter(G5, Treatment=="Selection")	
-
-##models
-model13<-lm(logsperm~logtestes,subset=(Treatment=="Baseline population"),data=G5)
-par(mfrow=c(2,2))
-plot(model13)
-summary(model13)
-##y= 0.03241x + 2.49298 
-##R^2= -0.008885   
-##p-value: 0.465
-
-model14<-lm(logsperm~logtestes,subset=(Treatment=="Relaxed Selection"),data=G5)
-par(mfrow=c(2,2))
-plot(model14)
-summary(model14)
-##y= -0.05132x + 2.43241
-##R^2= -0.007904  
-##p-value: 0.3788
-
-model15<-lm(logsperm~logtestes,subset=(Treatment=="Selection"),data=G5)
-par(mfrow=c(2,2))
-plot(model15)
-summary(model15)
-###y = 0.12407x + 2.55402 
-## R^2= 0.1107 
-##p-value: 0.01459
-
-#find CI to see whether significant. if CI for model no 0, means allometry significant for that population. doesnt overlap--> sig pop level differenece.
-confint(model13)
-#                 2.5 %     97.5 %
-#(Intercept)  2.42275370 2.5632112
-#logtestes   -0.05595839 0.1207716
-
-confint(model14)
-#               2.5 %     97.5 %
-#(Intercept)  2.3442509 2.52057861
-#logtestes   -0.1694542 0.06681146
-
-confint(model15)
-#                 2.5 %    97.5 %
-#(Intercept) 2.48009083 2.6279433
-#logtestes   0.02576828 0.2223802
-
-
-
-#### Plot G10 ( + baseline G0 for comparison) only ####
-target <- c("0", "10")
-G10 <- filter(data, Generation  %in% target)
-
-##allometric plot
-ggplot(data=G10,aes(x=logtestes,y=logsperm,colour=Treatment))+ geom_point(shape=19)+ stat_smooth(method=lm,level=0)+ xlab("log (testes volume (mm))") + ylab("log (sperm length (µm))") + 
-  ggtitle("G10 Testes Volume against Sperm length") +theme_light()+
-  #ylim(2.3, 2.5) +
-  geom_abline(intercept =3.365, slope = 1, color="gray55",linetype="dashed")
-
-
-##models
-model16<-lm(logsperm~logtestes,subset=(Treatment=="Baseline population"),data=G10)
-par(mfrow=c(2,2))
-plot(model16)
-summary(model16)
-##y=  0.03241x + 2.49298
-##R^2= -0.008885 
-## p-value: 0.465
-
-model17<-lm(logsperm~logtestes,subset=(Treatment=="Relaxed Selection"),data=G10)
-par(mfrow=c(2,2))
-plot(model17)
-summary(model17)
-##y=  0.20208x + 2.60460 
-##R^2= 0.1595   
-##p-value: 0.006199
-
-model18<-lm(logsperm~logtestes,subset=(Treatment=="Selection"),data=G10)
-plot(model18)
-summary(model18)
-###y = 0.17365x + 2.59203
-## R^2=0.1926 
-##p-value: 0.003847
-
-#find CI to see whether significant. if CI for model no 0, means allometry significant for that population. doesnt overlap--> sig pop level differenece.
-confint(model16)
-#                 2.5 %     97.5 %
-#(Intercept)  2.42275370 2.5632112
-#logtestes   -0.05595839 0.1207716
-
-confint(model17)
-#               2.5 %     97.5 %
-#(Intercept)  2.49888028 2.7103195
-#logtestes   0.06092889 0.3432221
-
-confint(model18)
-#                 2.5 %    97.5 %
-#(Intercept) 2.499127 2.6849272
-#logtestes   0.059786 0.2875073
-
-
-###################################### Replicates ######################################
-
-#### Body size vs Testes Volume ####
-
-repdata<-read.csv("C:\\Users\\Nicole Lee\\Desktop\\Pamela analyses check\\allometric plots\\MTestesVolumeOnly_G0510_addTreatmentcol.csv")
-repdata <- filter(repdata, replicate != 0)
-
-## Plot G5 ( + baseline G0 for comparison) only
-repG5 <- filter(repdata, Generation < 10)
-
-testesrepG5 <- ggplot(data=repG5,aes(x=logbs,y=logtestes,colour=Treatment))+ geom_point(shape=19)+ stat_smooth(method=lm,level=0)+ xlab("log (body size (mm))") + ylab("log (testes volume (mm))") +
-  facet_wrap(~ replicate) +
-  ggtitle("G5 Body Size against Testes Volume") +theme_light()+
-  scale_color_manual(values = c("#000000", "#FF6600", "#3399CC")) +
-  geom_abline(intercept =-0.82, slope = 1, color="gray55",linetype="dashed") + 
-  theme(panel.background = element_rect(fill = "white"), panel.border = element_rect(colour = "black", fill =NA), panel.grid.major = element_blank(), panel.grid.minor = element_blank()) +
-  theme(legend.position = "none")
-#rep 4 only has 1 control male with testes measured
-
-## Plot G10 ( + baseline G0 for comparison) only
-reptarget <- c("0", "10")
-repG10 <- filter(repdata, Generation  %in% reptarget)
-
-testesrepG10 <- ggplot(data=repG10,aes(x=logbs,y=logtestes,colour=Treatment))+ geom_point(shape=19)+ stat_smooth(method=lm,level=0)+ xlab("log (body size (mm))") + ylab("log (testes volume (mm))") +
-  facet_wrap(~ replicate) +
-  ggtitle("G10 Body Size against Testes Volume") +theme_light()+
-  geom_abline(intercept =-0.776, slope = 1, color="gray55",linetype="dashed")+
-  scale_color_manual(values = c("#000000", "#FF6600", "#3399CC")) +
-  theme(panel.background = element_rect(fill = "white"), panel.border = element_rect(colour = "black", fill =NA), panel.grid.major = element_blank(), panel.grid.minor = element_blank()) +
-  theme(legend.position = "none")
-
-##Combined testes plots
-library(cowplot)
-plot_grid(testesrepG5, testesrepG10)  
-
-
-#### Body size vs Sperm Length ####
-repdata<-read.csv("C:\\Users\\Nicole Lee\\Desktop\\Pamela analyses check\\allometric plots\\MSpermLengthOnly_G0510_addTreatmentcol.csv")
-repdata <- filter(repdata, replicate != 0)
-
-## Plot G5 ( + baseline G0 for comparison) only
-repG5 <- filter(repdata, Generation < 10)
-
-spermrepG5 <-  ggplot(data=repG5,aes(x=logbs,y=logsperm,colour=Treatment))+ geom_point(shape=19)+ stat_smooth(method=lm,level=0)+ xlab("log (body size (mm))") + ylab("log (sperm length (µm))") + 
-  ylim(2.4, 2.5145) + xlim(-0.19, 0) +
-  facet_wrap(~ replicate) +
-  ggtitle("G5 Body Size against Sperm length") +theme_light()+
-  geom_abline(intercept =2.593, slope = 1, color="gray55",linetype="dashed")+
-  scale_color_manual(values = c("#000000", "#FF6600", "#3399CC")) +
-  geom_abline(intercept =-0.778, slope = 1, color="gray55",linetype="dashed") + 
-  theme(panel.background = element_rect(fill = "white"), panel.border = element_rect(colour = "black", fill =NA), panel.grid.major = element_blank(), panel.grid.minor = element_blank()) +
-  theme(legend.position = "none")
-
-## Plot G10 ( + baseline G0 for comparison) only
-reptarget <- c("0", "10")
-repG10 <- filter(repdata, Generation  %in% reptarget)
-
-spermrepG10 <- ggplot(data=repG10,aes(x=logbs,y=logsperm,colour=Treatment))+ geom_point(shape=19)+ stat_smooth(method=lm,level=0)+ xlab("log (body size (mm))") + ylab("log (sperm length (µm))") + 
-  ylim(2.4, 2.5145) + xlim(-0.19, 0) +
-  facet_wrap(~ replicate) +
-  ggtitle("G10 Body Size against Sperm length") +theme_light()+
-  geom_abline(intercept =2.593, slope = 1, color="gray55",linetype="dashed")+
-  scale_color_manual(values = c("#000000", "#FF6600", "#3399CC")) +
-  geom_abline(intercept =-0.778, slope = 1, color="gray55",linetype="dashed") + 
-  theme(panel.background = element_rect(fill = "white"), panel.border = element_rect(colour = "black", fill =NA), panel.grid.major = element_blank(), panel.grid.minor = element_blank()) +
-  theme(legend.position = "none")
-
-##Combined sperm plots
-library(cowplot)
-plot_grid(spermrepG5, spermrepG10)
