@@ -36,7 +36,7 @@ shapiro.test(G5RS$logtestes) #p-value = 0.02464 aka NOT NORMAL
 shapiro.test(G5S$logtestes) #p-value = 0.02464 aka NOT NORMAL
 
 
-#models (interpretation: http://www.sthda.com/english/articles/40-regression-analysis/167-simple-linear-regression-in-r/#model-assessment)
+#models
 model1<-lm(logtestes~logbs,subset=(Treatment=="Baseline population"),data=G5)
 par(mfrow=c(2,2))
 plot(model1)
