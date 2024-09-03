@@ -1,5 +1,5 @@
 #Import Data
-coact <- read.csv("~\\Baseline_behavioural data.csv")
+coact <- read.csv("~/Baseline_behavioural data.csv")
 
 library(dplyr)
 str(coact)
