@@ -1,5 +1,5 @@
 #Import Data
-data <-read.csv("~\\new_modeling_courtshipMST(issame).csv",header=T)
+data <-read.csv("~\\new_modeling_courtship.csv",header=T)
 head(data)
 str(data)
 data$rep<-as.factor(data$rep)
@@ -113,7 +113,7 @@ confint(m11)
 
 #### post hoc ####
 library(rstatix)
-cs <- read.csv("C:\\Users\\Nicole Lee\\Desktop\\Pamela analyses check\\Behaviour tests\\courtship_combinedCSV.csv")
+cs <- read.csv("~\courtship_combinedCSV.csv")
 library(dplyr)
 str(cs)
 cs$rep <- as.factor(cs$rep)
