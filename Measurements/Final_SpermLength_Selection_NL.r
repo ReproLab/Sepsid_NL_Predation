@@ -1,5 +1,5 @@
 #Import Data
-SL <- read.csv("C:\\Users\\Nicole Lee\\Desktop\\Pamela analyses check\\SL Significance\\MSpermLengthOnly_G0510.csv",na.strings = "NA",header=T)
+SL <- read.csv("~/MSpermLengthOnly_G0510.csv",na.strings = "NA",header=T)
 
 library(dplyr)
 str(SL)
@@ -52,29 +52,3 @@ legend(
   pt.cex=c(1.5,1.5),
   lty=c(1,1)
 )
-
-############################# Plotting individual replicates #################################
-
-library(Rmisc)
-library(ggplot2)
-library(dplyr)
-
-SL$SelectionStatus <- as.factor(SL$SelectionStatus)
-SL <- filter(SL, replicate != 0)
-
-colnames(SL)[colnames(SL) == 'SelectionStatus'] <- 'Group'
-levels(SL$Group)[levels(SL$Group) == "RS"]  <- "Control"
-levels(SL$Group)[levels(SL$Group) == "S"]  <- "Treatment"
-colnames(SL)[colnames(SL) == 'replicate'] <- 'Replicate'
-
-SLC <- summarySE(SL, measurevar="avgss", groupvars=c("Generation","Group", "Replicate"))
-
-# Standard error of the mean
-ggplot(SLC, aes(x=Generation, y=avgss, color=Group, shape=Replicate)) + 
-  geom_errorbar(aes(ymin=avgss-se, ymax=avgss+se), width=.1) +
-  geom_point()+
-  geom_line(aes(group=Group))+
-  facet_wrap(~ Replicate) +
-  labs(title = "Sperm Length", y = expression("Length of Sperm " ~(mu ~ M))) + 
-  theme_bw() +theme(plot.title = element_text(hjust = 0.5, face = "bold"), panel.grid.major = element_blank(), panel.grid.minor = element_blank())
-
