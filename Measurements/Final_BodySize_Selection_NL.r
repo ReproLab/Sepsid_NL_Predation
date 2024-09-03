@@ -3,6 +3,7 @@ BS1<- read.csv("~/Bodysize Only_G0510.csv",na.strings = "NA",header=T)
 
 library(ggplot2)
 library(dplyr)
+library(plotrix)
 #need remove NAs
 BS<-na.omit(BS1) 
 str(BS)
